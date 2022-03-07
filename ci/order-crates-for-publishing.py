@@ -24,10 +24,10 @@ def load_metadata():
 def get_packages():
     metadata = load_metadata()
 
-    manifest_path = dict()
+    manifest_path = {}
 
     # Build dictionary of packages and their immediate solana-only dependencies
-    dependency_graph = dict()
+    dependency_graph = {}
     for pkg in metadata['packages']:
         manifest_path[pkg['name']] = pkg['manifest_path'];
         dependency_graph[pkg['name']] = [x['name'] for x in pkg['dependencies'] if x['name'].startswith('solana')];
@@ -42,7 +42,7 @@ def get_packages():
     for dependency in circular_dependencies:
         sys.stderr.write('Error: Circular dependency: {}\n'.format(dependency))
 
-    if len(circular_dependencies) != 0:
+    if circular_dependencies:
         sys.exit(1)
 
     # Order dependencies
@@ -66,7 +66,12 @@ def get_packages():
                 deleted_packages.append(package)
                 sorted_dependency_graph.append((package, manifest_path[package]))
 
-        dependency_graph = {p: d for p, d in dependency_graph.items() if not p in deleted_packages }
+        dependency_graph = {
+            p: d
+            for p, d in dependency_graph.items()
+            if p not in deleted_packages
+        }
+
 
 
     return sorted_dependency_graph

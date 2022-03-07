@@ -35,14 +35,14 @@ with open(sys.argv[1]) as fh:
             stages_data[counter]['last_ts'] = x['now']
             stages_data[counter]['last_count'] = x['counts']
 
-for stage in stages_data.keys():
+for stage in stages_data:
     stages_data[stage]['data'].sort()
     #mean_index = stages_data[stage]['count'] / 2
     mean = 0
     average = 0
     eightieth = 0
     data_len = len(stages_data[stage]['data'])
-    mean_index = int(data_len / 2)
+    mean_index = data_len // 2
     eightieth_index = int(data_len * 0.8)
     #print("mean idx: {} data.len: {}".format(mean_index, data_len))
     if data_len > 0:
@@ -59,7 +59,7 @@ for stage in stages_data.keys():
     idx = -1
     if data_len >= num:
         print("    top {}: ".format(num), end='')
-        for x in range(0, num):
+        for x in range(num):
             print("{:,.2f}  ".format(stages_data[stage]['data'][idx]), end='')
             idx -= 1
             if stages_data[stage]['data'][idx] < average:

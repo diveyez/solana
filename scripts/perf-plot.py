@@ -20,7 +20,7 @@ with open(sys.argv[1]) as fh:
             json_part = line[line.find("{"):]
             x = json.loads(json_part)
             counter = x['name']
-            if not (counter in stages_to_counters):
+            if counter not in stages_to_counters:
                 stages_to_counters[counter] = []
                 stages_to_time[counter] = []
             stages_to_counters[counter].append(x['counts'])
@@ -28,7 +28,7 @@ with open(sys.argv[1]) as fh:
 
 fig, ax = plt.subplots()
 
-for stage in stages_to_counters.keys():
+for stage in stages_to_counters:
     plt.plot(stages_to_time[stage], stages_to_counters[stage], label=stage)
 
 plt.xlabel('ms')
